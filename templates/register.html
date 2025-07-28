@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scan2Save: Health Emergency QR Band</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+</head>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Scan2Save</div>
+      <a href="/login" class="nav-btn">Login</a>
+    </nav>
+  </header>
+
+    <main class="container">
+        <section class="card">
+            <h2>Register</h2>
+            <p>Sign up to stay updated and be part of our mission to revolutionize emergency healthcare through smart wearable tech.</p>
+            <form action="/register" method="post" class="register-form">
+                <label for="name">Full Name</label>
+                <input id="name" type="text" id="name" name="name" placeholder="Your name" required>
+
+                <label for="email">Email Address</label>
+                <input id="email" type="email" id="email" name="email" placeholder="you@example.com" required>
+
+                <label for="phone">Phone Number</label>
+                <input id="phone" type="tel" id="phone" name="phone" placeholder="+91 12345 67890" required>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Smart Health Band | Built with ❤️ for the INSPIRE Awards</p>
+    </div>
+  </footer>
+</body>
