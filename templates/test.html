@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+
+  <style>
+    #map {
+      height: 500px;
+      width: 100%;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <script>
+    // Initialize map
+    const map = L.map('map').setView([13.0827, 80.2707], 13); // Default: Chennai
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+
+    // Add draggable marker
+    const marker = L.marker([13.0827, 80.2707], { draggable: true }).addTo(map);
+
+    // Log lat/lng on drag end
+    marker.on('dragend', function (e) {
+      const pos = marker.getLatLng();
+      console.log("Latitude:", pos.lat.toFixed(6));
+      console.log("Longitude:", pos.lng.toFixed(6));
+    });
+  </script>
+
+</body>
+</html>

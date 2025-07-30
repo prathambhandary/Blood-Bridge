@@ -3,53 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scan2Save: Health Emergency QR Band</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  <title>Blood Bridge</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <style>
+    
+  </style>
 </head>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">Scan2Save</div>
-      <a href="/login" class="nav-btn">Login</a>
-    </nav>
+  <nav class="navbar">
+    <div class="logo">Blood Bridge</div>
+    <a href="/login" class="nav-btn">Login</a>
+  </nav>
 
-    <div class="hero">
-      <h1>Emergency Health, One Scan Away</h1>
-      <p>Your health profile, instantly accessible in emergencies. Empowering first responders, saving lives.</p>
-      <a href="/register" class="cta-btn">Get Started</a>
-    </div>
-  </header>
+  <section class="hero">
+    <h1>Connecting Lives Through Blood</h1>
+    <p>Blood Bridge is a hyperlocal platform that matches donors with those in urgent need — faster, safer, and closer than ever.</p>
+    <a href="/register" class="cta-btn">Join the Network</a>
+  </section>
 
   <main class="container">
-    <section class="card">
-      <h2>About Us</h2>
+    <div class="card">
+      <h2>Why Blood Bridge?</h2>
       <p>
-        We are a student-led innovation team, passionate about integrating technology with real-life safety. Our Smart Health Band stores critical medical information accessible by scanning a QR code, enabling instant emergency assistance.
+        In critical moments, every second counts. Blood Bridge uses real-time, location-based matching to connect donors and recipients within your community. We aim to eliminate delays and improve access to life-saving blood.
       </p>
-    </section>
+    </div>
 
-    <section class="card">
-      <h2>Our Vision</h2>
-      <p>
-        To create a safer world where individuals with health conditions are always supported during emergencies. Our goal is to equip every vulnerable person with an affordable, accessible tool that can speak when they can't.
-      </p>
-    </section>
+    <div class="card">
+      <h2>How It Works</h2>
+      <ul>
+        <li>🩸 Donors register with their blood group and location.</li>
+        <li>📍 In emergencies, recipients are matched with nearby donors instantly.</li>
+        <li>💡 Transparent, efficient, and community-driven.</li>
+      </ul>
+    </div>
 
-    <section class="card">
-      <h2>The Idea</h2>
+    <div class="card">
+      <h2>Our Mission</h2>
       <p>
-        A comfortable wristband equipped with a unique QR code that links to a personalized health dashboard: medical conditions, allergies, emergency contacts, medications, and critical notes. Quick scan, quick help.
+        To build a resilient, hyperlocal blood donor network that saves lives and empowers communities by bridging the gap between need and availability.
       </p>
-    </section>
+    </div>
+
+    <div class="card">
+      <h2>Be the Difference</h2>
+      <p>
+        Your single donation can save multiple lives. Join our network and be someone's lifeline when it matters most.
+      </p>
+      <br>
+      <a href="/register" class="cta-btn">Register Now</a>
+    </div>
   </main>
 
   <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 Smart Health Band | Built with ❤️ for the INSPIRE Awards</p>
-    </div>
+    &copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters
   </footer>
 </body>
+</html>

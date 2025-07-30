@@ -3,15 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scan2Save: Health Emergency QR Band</title>
+  <title>Blood Bridge: Health Emergency QR Band</title>
+
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&family=Audiowide&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+
+  <style>
+    #map {
+      height: 300px;
+      width: 100%;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo">Scan2Save</div>
+      <div class="logo">Blood Bridge</div>
       <a href="/logout" class="nav-btn">Logout</a>
     </nav>
   </header>
@@ -19,140 +34,97 @@
   <main class="container">
     <section class="card">
       <h2 style="color: red;">{{ errmsg }}</h2>
-      <h2>Personal Information</h2>
+      <h2>Update Personal Info</h2>
       <form action="/user_edit" method="post" class="register-form" autocomplete="off">
 
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" placeholder="Enter your full name" required value="{{ user.name }}">
-
+        <!-- Personal Details -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required value="{{ user.name }}">
+        </div>
         <div class="form-row">
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required value="{{ user.email }}">
+            <input type="email" id="email" name="email" required value="{{ user.email }}">
           </div>
           <div class="form-group">
-            <label for="email">Age</label>
-            <input type="number" id="age" name="age" placeholder="e.g. 35, 55, 80" required value="{{ user.age }}">
+            <label for="phone">10 Digit Whatsapp Number</label>
+            <input type="tel" id="phone" name="phone" required value="{{ user.phone }}">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required value="{{ user.phone }}">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required value="{{ user.dob }}">
           </div>
           <div class="form-group">
             <label for="blood_group">Blood Group</label>
-            <select name="blood_group" id="blood_group">
+            <select name="blood_group" id="blood_group" required>
               {% for group in ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] %}
-                <option value="{{ group }}" {% if user.blood_group == group %}selected{% endif %}>{{ group }}</option>
+              <option value="{{ group }}" {% if user.blood_group == group %}selected{% endif %}>{{ group }}</option>
               {% endfor %}
             </select>
           </div>
         </div>
 
-        <label for="address_line">Address</label>
-        <input type="text" id="address_line" name="address_line" placeholder="House number, street, area" required value="{{ user.address_line }}">
+        <!-- Address Fields -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address_line">Address Line</label>
+            <input type="text" id="address_line" name="address_line" value="{{ user.address_line }}">
+          </div>
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" value="{{ user.city }}">
+          </div>
+        </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="city">City</label>
-            <input type="text" id="city" name="city" placeholder="Enter your city" value="{{ user.city }}">
-          </div>
-          <div class="form-group">
             <label for="state">State</label>
-            <input type="text" id="state" name="state" placeholder="Enter your state" value="{{ user.state }}">
+            <input type="text" id="state" name="state" value="{{ user.state }}">
           </div>
           <div class="form-group">
             <label for="pincode">Pincode</label>
-            <input type="text" id="pincode" name="pincode" placeholder="Postal code" value="{{ user.pincode }}">
+            <input type="text" id="pincode" name="pincode" value="{{ user.pincode }}">
           </div>
         </div>
 
-        <h2>Medical Conditions</h2>
         <div class="form-row">
-          {% for condition in ['diabetes', 'hypertension', 'asthma', 'epilepsy', 'heart_disease', 'kidney_disease', 'bleeding_disorder', 'organ_transplant', 'mental_disorder'] %}
-          <div class="toggle-group">
-            <label class="toggle-label" for="{{ condition }}">{{ condition.replace('_', ' ').title() }}</label>
-            <label class="switch">
-              <input type="checkbox" id="{{ condition }}" name="{{ condition }}" {% if user[condition] %}checked{% endif %}>
-              <span class="slider round"></span>
-            </label>
-          </div>
-          {% endfor %}
-        </div>
-
-        <label for="other_conditions">Other Medical Conditions</label>
-        <textarea id="additional_conditions" name="additional_conditions" rows="2" placeholder="List any other relevant conditions here">{{ user.additional_conditions }}</textarea>
-
-        <h2>Emergency Instructions</h2>
-        <label for="first_aid">First Aid Information</label>
-        <textarea id="first_aid" name="first_aid" rows="4" placeholder="Mention steps or precautions in case of emergency">{{ user.first_aid }}</textarea>
-
-        <h2>Emergency Contact</h2>
-        <div class="first-row">
           <div class="form-group">
-            <label for="emergency_contact_name">Full Name</label>
-            <input id="emergency_contact_name" type="text" name="emergency_contact_name" placeholder="Contact person name" required value="{{ user.emergency_contact_name }}">
+            <label for="state">Last Blood Donated(approx. date)</label>
+            <input type="date" id="last_donated" name="last_donated" value="{{ user.last_donated }}">
           </div>
           <div class="form-group">
-            <label for="emergency_contact_number">Phone Number</label>
-            <input id="emergency_contact_number" type="tel" name="emergency_contact_number" placeholder="+91 98765 43210" required value="{{ user.emergency_contact_number }}" >
-          </div>
-          <div class="form-group">
-            <label for="emergency_contact_relation">Relationship</label>
-            <input id="emergency_contact_relation" type="text" name="emergency_contact_relation" placeholder="e.g., Friend, Guardian" required value="{{ user.emergency_contact_relation }}">
+            <label for="pincode">Health Problems if any</label>
+            <input type="text" id="health_problems" name="health_problems" value="{{ user.health_problems }}">
           </div>
         </div>
 
-        <h2>Family Contact</h2>
-        <div class="first-row">
+        <!-- Location with Map -->
+        <label for="map">Click on the map to autofill Latitude & Longitude</label>
+        <div id="map"></div>
+
+        <div class="form-row">
           <div class="form-group">
-            <label for="family_contact_name">Full Name</label>
-            <input id="family_contact_name" type="text" name="family_contact_name" placeholder="Family member name" required value="{{ user.family_contact_name }}">
+            <label for="latitude">Latitude</label>
+            <input type="text" id="latitude" name="latitude" value="{{ user.latitude }}">
           </div>
           <div class="form-group">
-            <label for="family_contact_number">Phone Number</label>
-            <input id="family_contact_number" type="tel" name="family_contact_number" placeholder="+91 98765 43210" required value="{{ user.family_contact_number }}">
-          </div>
-          <div class="form-group">
-            <label for="family_contact_relation">Relationship</label>
-            <input id="family_contact_relation" type="text" name="family_contact_relation" placeholder="e.g., Father, Sister" required value="{{ user.family_contact_relation }}">
+            <label for="longitude">Longitude</label>
+            <input type="text" id="longitude" name="longitude" value="{{ user.longitude }}">
           </div>
         </div>
 
-        <h2>Doctor Contact</h2>
-        <div class="first-row">
-          <div class="form-group">
-            <label for="doctor_name">Doctor's Name</label>
-            <input id="doctor_name" type="text" name="doctor_name" placeholder="Dr. John Doe" value="{{ user.doctor_name }}">
-          </div>
-          <div class="form-group">
-            <label for="doctor_specialization">Specialization</label>
-            <input id="doctor_specialization" type="text" name="doctor_specialization" placeholder="Cardiologist, GP, etc." value="{{ user.doctor_specialization }}">
-          </div>
-        </div>
-        <div class="first-row">
-          <div class="form-group">
-            <label for="doctor_contact_number">Phone Number</label>
-            <input id="doctor_contact_number" type="tel" name="doctor_contact_number" placeholder="+91 98765 43210" value="{{ user.doctor_contact_number }}">
-          </div>
-          <div class="form-group">
-            <label for="doctor_email">Email</label>
-            <input id="doctor_email" type="email" name="doctor_email" placeholder="doctor@example.com" value="{{ user.doctor_email }}">
-          </div>
-        </div>
-
-        <h2>QR Details</h2>
-        <div class="first-row">
-          <div class="form-group">
-            <label for="qr_code_id">QR Code ID</label>
-            <input id="qr_code_id" type="text" name="qr_code_id" placeholder="Auto-generated" disabled value="{{ user.qr_code_id }}">
-          </div>
-          <div class="form-group">
-            <label for="last_updated">Last Updated</label>
-            <input id="last_updated" type="datetime-local" name="last_updated" disabled value="{{ user.last_updated }}" >
-          </div>
+        <!-- Notification Switch -->
+        <h2>Notification Preference</h2>
+        <div class="toggle-group">
+          <label class="toggle-label" for="notify">Receive Emergency Alerts</label>
+          <label class="switch">
+            <input type="checkbox" id="notify" name="notify" checked {% if user.notify %}checked{% endif %}>
+            <span class="slider round"></span>
+          </label>
         </div>
 
         <button type="submit">Save</button>
@@ -162,9 +134,41 @@
 
   <footer>
     <div class="footer-content">
-      <p>&copy; 2025 Smart Health Band | Built with ❤️ for the INSPIRE Awards</p>
+      <p>&copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters</p>
     </div>
   </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <script>
+    const latInput = document.getElementById('latitude');
+    const lngInput = document.getElementById('longitude');
+
+    let lat = parseFloat(latInput.value) || 20.5937;
+    let lng = parseFloat(lngInput.value) || 78.9629;
+
+    const map = L.map('map').setView([lat, lng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+
+    const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+
+    marker.on('dragend', function () {
+      const pos = marker.getLatLng();
+      latInput.value = pos.lat.toFixed(6);
+      lngInput.value = pos.lng.toFixed(6);
+    });
+
+    map.on('click', function (e) {
+      const pos = e.latlng;
+      marker.setLatLng(pos);
+      latInput.value = pos.lat.toFixed(6);
+      lngInput.value = pos.lng.toFixed(6);
+    });
+  </script>
 
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

@@ -215,13 +215,6 @@ h1, h2, .logo {
   transform: translateY(-1px);
 }
 
-.toggle-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
-}
-
 .toggle-label {
   font-weight: 500;
   font-size: 16px;
@@ -397,13 +390,6 @@ label {
   display: block;
 }
 
-/* Toggle Switch Styling */
-.toggle-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .toggle-label {
   font-size: 1rem;
   font-weight: 500;
@@ -469,8 +455,7 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1 1 200px; /* grows and wraps on small screens */
-  padding: 10px;
+  padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -480,4 +465,152 @@ input:checked + .slider:before {
   font-weight: 600;
   color: #333;
   white-space: nowrap;
+}
+
+.donor-list h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.donor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.donor-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.donor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.donor-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
+}
+
+.donor-card p {
+  font-size: 1rem;
+  margin: 0.4rem 0;
+  color: var(--text);
+}
+
+.donor-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  font-family: 'Inter', sans-serif;
+}
+
+.donor-table th,
+.donor-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.donor-table th {
+  background-color: #4c65af;
+  color: white;
+  font-weight: 600;
+}
+
+.donor-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.not-eligible {
+  color: red;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: var(--light-gray, #f5f5f5);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+}
+
+.filter-form label {
+  font-weight: 600;
+  color: var(--dark-text, #333);
+}
+
+.filter-form select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  min-width: 120px;
+  cursor: pointer;
+}
+
+.filter-form button {
+  padding: 0.5rem 1.2rem;
+  background-color: var(--primary, #e63946);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-form button:hover {
+  background-color: var(--primary-dark, #c71f2d);
+}
+
+.donor-list {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  margin-top: 2rem;
+}
+
+.donor-list h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.sos-button {
+  background-color: #ff3b3b;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 0 10px rgba(255, 59, 59, 0.5);
+}
+
+.sos-button:hover {
+  background-color: #e10000;
+} 
+
+.sos {
+  display: flex;
+  justify-content: center;
 }

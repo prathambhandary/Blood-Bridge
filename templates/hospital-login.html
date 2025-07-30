@@ -14,19 +14,21 @@
   <header>
     <nav class="navbar">
       <div class="logo">Blood Bridge</div>
-      <a href="/register" class="nav-btn">Register</a>
+      <!-- <a href="/register" class="nav-btn">Register</a> -->
     </nav>
   </header>
 
     <main class="container">
         <section class="card">
-            <h2>Login</h2>
-            <form action="/login" method="post" class="register-form">
-                <label for="name">Full Name</label>
-                <input id="name" type="text" id="name" name="name" placeholder="Your name" required>
-
-                <label for="email">Email Address</label>
+            <h2>Login - Hospital Dashboard</h2>
+            <form action="/hospital" method="post" class="register-form">
+                <label for="name">Email Address</label>
                 <input id="email" type="email" id="email" name="email" placeholder="you@example.com" required>
+
+                <label for="email">Password</label>
+                <input id="password" type="password" id="password" name="password" placeholder="********" required>
+
+                <label for="">{{error}}</label>
 
                 <button type="submit">Submit</button>
             </form>

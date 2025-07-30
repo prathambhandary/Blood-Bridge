@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bridge: Health Emergency QR Band</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&family=Audiowide&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Blood Bridge</div>
+    </nav>
+  </header>
+
+  <section class="container donor-list">
+    <h2>Available Donors</h2>
+    <form action="/sos" method="post" class="sos">
+      <button type="submit" class="sos-button">Emergency SOS</button>
+    </form>
+    <div class="form-group">
+        <form method="get" action="/hospital-dashboard" class="filter-form">
+            <label for="blood_group">Filter by Blood Group:</label>
+            <select name="blood_group" id="blood_group">
+                <option value="">All</option>
+                <option value="A+" {% if selected_group == "A+" %}selected{% endif %}>A+</option>
+                <option value="A-" {% if selected_group == "A-" %}selected{% endif %}>A-</option>
+                <option value="B+" {% if selected_group == "B+" %}selected{% endif %}>B+</option>
+                <option value="B-" {% if selected_group == "B-" %}selected{% endif %}>B-</option>
+                <option value="AB+" {% if selected_group == "AB+" %}selected{% endif %}>AB+</option>
+                <option value="AB-" {% if selected_group == "AB-" %}selected{% endif %}>AB-</option>
+                <option value="O+" {% if selected_group == "O+" %}selected{% endif %}>O+</option>
+                <option value="O-" {% if selected_group == "O-" %}selected{% endif %}>O-</option>
+            </select>
+            <button type="submit">Apply</button>
+        </form>
+
+    </div>
+
+    <table class="donor-table">
+  <thead>
+    <tr>
+      <th>Sl No</th>
+      <th>Blood Group</th>
+      <th>Phone</th>
+      <th>Last Donated</th>
+      <th>Distance</th>
+      <th>Health Issues</th>
+    </tr>
+  </thead>
+    <tbody>
+            {% for donor in donors %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ donor.blood_group }}</td>
+                    <td>{{ donor.contact }}</td>
+                    <td class="{{ 'eligible' if donor.eligible else 'not-eligible' }}">
+                        {{ donor.last_donated_days }} days ago
+                    </td>
+                    <td>{{ donor.distance }} km</td>
+                    <td>{{ donor.diseases or 'None' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    </section>
+
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
