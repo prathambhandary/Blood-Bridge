@@ -13,9 +13,19 @@
 </head>
 <body>
   <nav class="navbar">
-    <div class="logo">Blood Bridge</div>
-    <a href="/login" class="nav-btn">Login</a>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img" />
+      <span>Blood Bridge</span>
+    </div>
+
+    <div class="nav-links" id="nav-links">
+      <a href="/hospital" class="nav-btn">Hospital Login</a>
+      <a href="/login" class="nav-btn">Donor Login</a>
+    </div>
   </nav>
+
+
+
 
   <section class="hero">
     <h1>Connecting Lives Through Blood</h1>
@@ -53,12 +63,13 @@
         Your single donation can save multiple lives. Join our network and be someone's lifeline when it matters most.
       </p>
       <br>
-      <a href="/register" class="cta-btn">Register Now</a>
+      <a href="/register" class="nav-btn">Register Now</a>
     </div>
   </main>
 
   <footer>
     &copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters
   </footer>
+
 </body>
 </html>
