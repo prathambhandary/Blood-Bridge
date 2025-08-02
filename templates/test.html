@@ -2,49 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Map Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-
+  <title>Why Donate Blood?</title>
   <style>
-    #map {
-      height: 500px;
-      width: 100%;
+    :root {
+      --primary: #b00020;
+      --accent: #f47c7c;
+      --bg-light: #fdf2f2;
+      --text: #2a0a16;
+      --white: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --radius: 12px;
+      --transition: 0.3s ease;
     }
+
     body {
       margin: 0;
       padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .container {
+      text-align: center;
+      z-index: 2;
+      position: relative;
+      padding: 0 20px;
+    }
+
+    .message {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1.5s forwards;
+      font-size: 1.25rem;
+      line-height: 1.8;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .line-1 { animation-delay: 0s; }
+    .line-2 { animation-delay: 3s; }
+    .line-3 { animation-delay: 6s; }
+    .line-4 { animation-delay: 9s; }
+    .line-5 { animation-delay: 12s; }
+    .line-6 { animation-delay: 15s; }
+
+    .highlight {
+      color: red;
+      font-weight: bold;
+    }
+
+    .drop {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: rgba(176, 0, 32, 0.1);
+      border-radius: 50%;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    .drop:nth-child(1)  { left: 10%;  animation-duration: 6s; animation-delay: 1s; }
+    .drop:nth-child(2)  { left: 20%;  animation-duration: 8s; animation-delay: 2s; }
+    .drop:nth-child(3)  { left: 30%;  animation-duration: 5s; animation-delay: 0s; }
+    .drop:nth-child(4)  { left: 50%;  animation-duration: 7s; animation-delay: 3s; }
+    .drop:nth-child(5)  { left: 70%;  animation-duration: 6s; animation-delay: 1.5s; }
+    .drop:nth-child(6)  { left: 80%;  animation-duration: 9s; animation-delay: 2.5s; }
+
+    audio {
+      display: none;
     }
   </style>
+
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  <script>
+    // Redirect after message animation completes
+    setTimeout(() => {
+      window.location.href = "/templates/test.html";
+    }, 18500); // ~18.5 seconds
+  </script>
 </head>
 <body>
 
-  <div id="map"></div>
 
-  <!-- Leaflet JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <!-- Awareness messages -->
+  <div class="container" style="font-family: 'Space Grotesk', sans-serif;">
+    <h2 class="message line-1">Every drop counts...</h2>
+    <h2 class="message line-2">But every <span class="sos-button">second</span>, someone is waiting for that drop.</h2>
+    <h2 class="message line-3"><span class="sos-button">12,000+</span> people die every day due to blood shortage.</h2>
+    <h2 class="message line-4">That’s a life lost... every few seconds.</h2>
+    <h2 class="message line-5">A life you could have saved.</h2>
+    <h2 class="message line-6"><span class="sos-button">Donate blood. Save lives.</span></h2>
+  </div>
 
-  <script>
-    // Initialize map
-    const map = L.map('map').setView([13.0827, 80.2707], 13); // Default: Chennai
-
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19
-    }).addTo(map);
-
-    // Add draggable marker
-    const marker = L.marker([13.0827, 80.2707], { draggable: true }).addTo(map);
-
-    // Log lat/lng on drag end
-    marker.on('dragend', function (e) {
-      const pos = marker.getLatLng();
-      console.log("Latitude:", pos.lat.toFixed(6));
-      console.log("Longitude:", pos.lng.toFixed(6));
-    });
-  </script>
-
+  <!-- Optional background music -->
+  <audio autoplay loop>
+    <source src="your-piano-music.mp3" type="audio/mpeg">
+  </audio>
 </body>
 </html>

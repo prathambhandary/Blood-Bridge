@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blood Bridge: Health Emergency QR Band</title>
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&family=Audiowide&display=swap" rel="stylesheet">
 
   <!-- Leaflet CSS -->
@@ -118,7 +119,7 @@
         </div>
         <div class="form-group">
           <button type="button" onclick="getLocation()">Detect Location</button>
-        </div>
+        </div>  
 
         <!-- Notification Switch -->
         <h2>Notification Preference</h2>
@@ -171,24 +172,6 @@
       latInput.value = pos.lat.toFixed(6);
       lngInput.value = pos.lng.toFixed(6);
     });
-
-    function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          document.getElementById('latitude').value = position.coords.latitude.toFixed(6);
-          document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
-          console.log("Location set");
-        },
-        function (error) {
-          console.error("Error detecting location:", error.message);
-          alert("Location access denied or unavailable.");
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by your browser.");
-    }
-  }
 
   </script>
 

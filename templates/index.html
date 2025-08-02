@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blood Bridge</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
+  <link rel="stylesheet" href="/static/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
   <style>
@@ -14,7 +16,7 @@
 <body>
   <nav class="navbar">
     <div class="logo">
-      <img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img" />
+      <img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="Blood Bridge Logo" class="logo-img" />
       <span>Blood Bridge</span>
     </div>
 
@@ -24,52 +26,64 @@
     </div>
   </nav>
 
-
-
-
   <section class="hero">
-    <h1>Connecting Lives Through Blood</h1>
-    <p>Blood Bridge is a hyperlocal platform that matches donors with those in urgent need — faster, safer, and closer than ever.</p>
-    <a href="/register" class="cta-btn">Join the Network</a>
+    <h1>Be the Reason Someone Lives Today</h1>
+    <p>
+      Blood Bridge connects life-saving donors with those in critical need — faster, smarter, and closer than ever before.
+    </p>
+    <a href="/register" class="cta-btn">Join the Movement</a>
   </section>
 
+  
   <main class="container">
     <div class="card">
-      <h2>Why Blood Bridge?</h2>
-      <p>
-        In critical moments, every second counts. Blood Bridge uses real-time, location-based matching to connect donors and recipients within your community. We aim to eliminate delays and improve access to life-saving blood.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2>How It Works</h2>
+      <h2>🚨 The Reality We Face</h2>
       <ul>
-        <li>🩸 Donors register with their blood group and location.</li>
-        <li>📍 In emergencies, recipients are matched with nearby donors instantly.</li>
-        <li>💡 Transparent, efficient, and community-driven.</li>
+        <strong style="color: red;">12,000+</strong> people die every day in India due to blood shortages. <br>
+        <strong style="color: red;">Every 2 seconds</strong>, someone needs blood. <br>
+        <strong style="color: red;">1 in 3</strong> people will need blood in their lifetime. <br>
       </ul>
-    </div>
-
-    <div class="card">
-      <h2>Our Mission</h2>
       <p>
-        To build a resilient, hyperlocal blood donor network that saves lives and empowers communities by bridging the gap between need and availability.
+        And yet, many willing donors don’t know where or how to help. We’re here to fix that.
+      </p>
+    </div>
+    
+    <div class="card">
+      <h2>💡 What Makes Us Different?</h2>
+      <p>
+        Blood Bridge is a <strong style="color: red;">Hyperlocal, real-time blood matching platform.</strong> We cut through red tape and delays by using your location to <strong style="color: red;">instantly connect donors and recipients</strong> when it matters most.
       </p>
     </div>
 
     <div class="card">
-      <h2>Be the Difference</h2>
+      <h2>⚙️ How It Works</h2>
       <p>
-        Your single donation can save multiple lives. Join our network and be someone's lifeline when it matters most.
-      </p>
-      <br>
-      <a href="/register" class="nav-btn">Register Now</a>
+        📍 Register with your blood group, pin code, and availability. <br>
+        🔔 Get notified when someone nearby urgently needs your blood type. <br>
+        🚑 Head to the hospital or blood bank. Save a life. It’s that simple. <br>  
+      </p>  
     </div>
+
+    <div class="card">
+      <h2>❤️ Our Mission</h2>
+      <p>
+        To stop preventable deaths due to blood unavailability by building India’s strongest grassroots blood donor network — one drop, one hero, one life at a time.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Ready to Save Lives?</h2>
+      <p>
+        Your single donation can be the lifeline someone’s praying for. It’s free, it’s fast, and it’s powerful.
+      </p><br>
+      <a href="/register" class="nav-btn">Become a Donor Today</a>
+    </div>
+
   </main>
 
   <footer>
     &copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters
   </footer>
-
 </body>
+
 </html>

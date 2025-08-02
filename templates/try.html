@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bridge: Donor Registration</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #b00020;
+      --accent: #f47c7c;
+      --bg-light: #fdf2f2;
+      --text: #2a0a16;
+      --white: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --radius: 12px;
+      --transition: 0.3s ease;
+    }
+
+    .transition-screen {    
+    width: 100%;
+    padding: 30px 20px;
+    background: var(--bg-light);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: var(--radius);
+    position: relative; /* changed from fixed */
+    box-shadow: 0 0 20px var(--shadow);
+    }
+
+
+    .message {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1.5s forwards;
+      font-size: 1.25rem;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .line-1 { animation-delay: 0s; }
+    .line-2 { animation-delay: 3s; }
+    .line-3 { animation-delay: 6s; }
+    .line-4 { animation-delay: 9s; }
+    .line-5 { animation-delay: 12s; }
+    .line-6 { animation-delay: 15s; }
+
+    .highlight {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .drop {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: rgba(176, 0, 32, 0.1);
+      border-radius: 50%;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    .drop:nth-child(1)  { left: 10%;  animation-duration: 6s; animation-delay: 1s; }
+    .drop:nth-child(2)  { left: 20%;  animation-duration: 8s; animation-delay: 2s; }
+    .drop:nth-child(3)  { left: 30%;  animation-duration: 5s; animation-delay: 0s; }
+    .drop:nth-child(4)  { left: 50%;  animation-duration: 7s; animation-delay: 3s; }
+    .drop:nth-child(5)  { left: 70%;  animation-duration: 6s; animation-delay: 1.5s; }
+    .drop:nth-child(6)  { left: 80%;  animation-duration: 9s; animation-delay: 2.5s; }
+
+    main, footer, header {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Transition Animation -->
+  
+  <!-- Page Content -->
+  <header>
+      <nav class="navbar">
+          <div class="logo">
+              <img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img">
+              <span style="padding-left: 10px;">Blood Bridge</span>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="container">
+        <section class="card">
+            <div class="transition-screen" id="transition">
+              <div class="drop"></div>
+              <div class="drop"></div>
+              <div class="drop"></div>
+              <div class="drop"></div>
+              <div class="drop"></div>
+              <div class="drop"></div>
+          
+              <div class="message line-1">Every drop counts...</div>
+              <div class="message line-2">But every <strong>second</strong>, someone is waiting for that drop.</div>
+              <div class="message line-3"><span class="highlight">12,000+</span> people die every day due to blood shortage.</div>
+              <div class="message line-4">That’s a life lost... every few seconds.</div>
+              <div class="message line-5">A life you could have saved.</div>
+              <div class="message line-6"><span class="highlight">Donate blood. Save lives.</span></div>
+            </div>
+      <!-- Your form goes here -->
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters | Built with ❤️ for the INSPIRE Awards</p>
+    </div>
+  </footer>
+
+  <script>
+    // After 18.5 seconds, hide transition and show real content
+    setTimeout(() => {
+      document.getElementById('transition').style.display = 'none';
+    }, 18500);
+  </script>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
