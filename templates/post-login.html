@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bridge: Health Emergency QR Band</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+</head>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img"><span style="padding-left: 10px;">Blood Bridge</span></div>
+      <a href="/" class="nav-btn">Home</a>
+    </nav>
+  </header>
+  <section class="hero">
+    <h1>You're all set!</h1>
+    <p>Thanks for being here with us as a donor with <strong>Blood Bridge</strong>.</p>
+    <p>Your decision could save lives — <strong>
+      <span style=" text-shadow: 0 0 8px white;">but what about yours?</span>
+    </strong></p>
+    <p>Create your Emergency Health QR now to help doctors access vital info instantly in case of an emergency.</p>
+    <a href="/qr-register" class="cta-btn">Create My Emergency QR</a>
+  </section>
+
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters</p>
+    </div>
+  </footer>
+</body>

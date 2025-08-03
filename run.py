@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin, current_user
-from database import add_donor, get_donor_by_email, update_donor, verify_hospital_password, calculate_distance, days_since, get_all_donors, is_eligible_to_donate, add_hospital, verify_hospital_password
+from database import add_donor, get_donor_by_email, update_donor, verify_hospital_password, calculate_distance, days_since, get_all_donors, is_eligible_to_donate, add_hospital, verify_hospital_password, get_donor_by_id, generate_qr_id, add_qr_user, get_donor_by_qr_id, get_qr_donor_by_email, generate_qr
 from mail import send_email
+import os
 
 app = Flask(__name__)
 app.secret_key = "secretkey"
@@ -92,6 +93,11 @@ def save():
         "health_problems": request.form['health_problems']
     }
     update_donor(donor_data)
+
+    print(not(get_qr_donor_by_email(donor_data['email'])))
+
+    if not get_qr_donor_by_email(donor_data['email']):
+        return render_template("post-login.html")
     return render_template("post-regs.html")
 
 @app.route("/login", methods=["GET", "POST"])
@@ -102,15 +108,20 @@ def login():
         donor = get_donor_by_email(email)
         if donor and donor.get('name') == name:
             donor_obj = Donor(donor['id'], donor['name'], donor['email'])
-            login_user(donor_obj)
+            print(login_user(donor_obj))
+            print(donor)
+            session['donor_id'] = donor['id']
             return render_template("user-edit-card2.html", user=donor)
         return "Invalid login"
     return render_template("login.html")
 
 @app.route("/logout")
-@login_required
 def logout():
     logout_user()
+    session.pop('donor_id', None)
+    session['donor_id'] = None
+    session.clear()
+    print(session.get('donor_id'))
     return redirect(url_for("home"))
 
 ##################################################################################
@@ -266,6 +277,94 @@ def hospital_logout():
     session.pop('hospital_data', None)
     session.get('hospital_data')
     return redirect(url_for('hospital_login'))
+
+############################################################################
+
+@app.route('/qr-register', methods=["POST", "GET"])
+def qr_register():
+    if session.get("donor_id"):
+        user = get_donor_by_id(session.get("donor_id"))
+    else:
+        user = {}
+    if request.method == "POST":
+        qr = generate_qr_id()
+        user_data = {
+            "name": request.form['name'],
+            "email": request.form['email'],
+            "phone": request.form['phone'],
+            "age": request.form['age'],
+            "blood_group": request.form['blood_group'],
+            "address_line": request.form['address_line'],
+            "city": request.form['city'],
+            "state": request.form['state'],
+            "pincode": request.form['pincode'],
+            "diabetes": 'diabetes' in request.form,
+            "hypertension": 'hypertension' in request.form,
+            "asthma": 'asthma' in request.form,
+            "epilepsy": 'epilepsy' in request.form,
+            "heart_disease": 'heart_disease' in request.form,
+            "kidney_disease": 'kidney_disease' in request.form,
+            "bleeding_disorder": 'bleeding_disorder' in request.form,
+            "organ_transplant": 'organ_transplant' in request.form,
+            "mental_disorder": 'mental_disorder' in request.form,
+            "additional_conditions": request.form['additional_conditions'],
+            "first_aid": request.form['first_aid'],
+            "emergency_contact_name": request.form['emergency_contact_name'],
+            "emergency_contact_number": request.form['emergency_contact_number'],
+            "emergency_contact_relation": request.form['emergency_contact_relation'],
+            "family_contact_name": request.form['family_contact_name'],
+            "family_contact_number": request.form['family_contact_number'],
+            "family_contact_relation": request.form['family_contact_relation'],
+            "doctor_name": request.form['doctor_name'],
+            "doctor_specialization": request.form['doctor_specialization'],
+            "doctor_contact_number": request.form['doctor_contact_number'],
+            "doctor_email": request.form['doctor_email'],
+            "qr_code_id": qr
+        }
+        
+        if add_qr_user(user_data) == False:
+            return render_template("qr-register.html", user=user_data, errmsg="User already exists with this email and name!")
+
+        return render_template("qr-display.html", id=qr)
+    return render_template("qr-register.html", user=user)
+
+@app.route('/qr-id=<qr_id>')
+def get_patient_by_qr(qr_id):
+
+    user = get_donor_by_qr_id(qr_id)
+
+    if user:
+        return render_template('patient-details.html', user=user)
+    else:
+        return "No patient found with this QR ID.", 404
+    
+@app.route('/status')
+def status():
+    if current_user.is_authenticated:
+        return f"Logged in as: {current_user.email}"
+    if session.get('donor_id'):
+        return f"Logged in as: {session.get('donor_id')} with id"
+    return "Not logged in"
+
+@app.route('/view-qr')
+def view_qr():
+    if session.get('donor_id'):
+        donor = get_donor_by_id(session.get('donor_id'))
+        email = donor['email']
+        qr_donor = get_qr_donor_by_email(email)
+        qr = qr_donor['qr_code_id']
+        qr_path = os.path.join('static/qrcodes', f"{qr}.png")
+        print('here')
+        if os.path.exists(qr_path):
+            return render_template('qr-display.html', id=qr)
+        else:
+            generate_qr(f"https://eazyfencer.pythonanywhere.com/qr-id={qr}", qr)
+            return "refresh again to get qr"
+    return "Not logged in"
+
+@app.route('/ss')
+def ss():
+    return render_template('ss.html')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
