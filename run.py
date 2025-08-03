@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin, current_user
-from database import add_donor, get_donor_by_email, update_donor, verify_hospital_password, calculate_distance, days_since, get_all_donors, is_eligible_to_donate
+from database import add_donor, get_donor_by_email, update_donor, verify_hospital_password, calculate_distance, days_since, get_all_donors, is_eligible_to_donate, add_hospital, verify_hospital_password
 from mail import send_email
 
 app = Flask(__name__)
@@ -115,7 +115,7 @@ def logout():
 
 ##################################################################################
 
-@app.route("/hospital", methods=["GET", "POST"])
+@app.route("/hospital", methods=["GET", "POST"]) 
 def hospital_login():
     if request.method == "POST":
         email = request.form['email']
@@ -124,9 +124,7 @@ def hospital_login():
         hospital = verify_hospital_password(email, password)
         print(hospital)
         if hospital:
-            session['hospital_id'] = hospital['id']
-            print(hospital['id'])
-            session['hospital_name'] = hospital['name']
+            session["hospital_data"] = hospital
             print("here")
             return redirect(url_for('hospital_dashboard'))
         print("there")
@@ -137,10 +135,12 @@ def hospital_login():
 
 @app.route("/hospital-dashboard")
 def hospital_dashboard():
-    print(session.get('hospital_id'))
-    if session.get('hospital_id'):
-        hospital_lat = 13.3521
-        hospital_lon = 74.7917
+    print(session.get('hospital_data'))
+    
+    if session.get('hospital_data'):
+        hospital = session.get('hospital_data')
+        hospital_lat = hospital['latitude']
+        hospital_lon = hospital['longitude']
 
         selected_group = request.args.get("blood_group")
         raw_donors = get_all_donors()
@@ -182,30 +182,32 @@ def hospital_dashboard():
         # Final list: eligible first, then ineligible — both within same radius
         final_donors = top_eligible + sorted(nearby_ineligible, key=lambda d: d['distance'])
 
-        return render_template("hospital-dashboard.html", donors=final_donors, selected_group=selected_group)
+        return render_template("hospital-dashboard.html", donors=final_donors)
 
     return redirect(url_for("hospital_login"))
 
 @app.route("/sos", methods=['GET', 'POST'])
 def sos():
-    if session.get('hospital_id'):
+    if session.get('hospital_data'):
         return render_template("get_bg.html")
     return redirect(url_for('hospital_login'))
 
 @app.route("/sos-send", methods=['GET', 'POST'])
 def sos_send():
-    print(not session.get('hospital_id'))
-    if not session.get('hospital_id'):
+    print(not session.get('hospital_data'))
+    if not session.get('hospital_data'):
         return redirect(url_for('hospital_login'))
 
     if request.method == "POST":
         selected_group = request.form['blood_group']
 
+        hospital = session.get('hospital_data')
+
         # Define hospital coordinates and message details
-        hospital_lat = 13.3521
-        hospital_lon = 74.7917
-        hospital_address = "KMC Hospital, Manipal"
-        hospital_phone = "1234567890"
+        hospital_lat = hospital['latitude']
+        hospital_lon = hospital['longitude']
+        hospital_address = hospital['address']
+        hospital_phone = hospital['phone']
         location_url = f"https://www.google.com/maps?q={hospital_lat},{hospital_lon}"
 
         # Get all donors and filter by blood group, eligibility, notify=1
@@ -238,15 +240,31 @@ def sos_send():
                 address=hospital_address,
                 call_number=hospital_phone
             )
-        return redirect(url_for('hospital_dashboard'))
+        return render_template("hospital-post-sos.html")
 
     return redirect(url_for("hospital_dashboard"))
 
+@app.route("/hospital-register", methods=['POST', 'GET'])
+def hospital_register():
+    if request.method == "POST":
+        name = request.form['name']
+        if not add_hospital(
+                request.form['name'],
+                request.form['email'],
+                request.form['password'],
+                request.form['latitude'],
+                request.form['longitude'],
+                request.form['address_line'] + ', ' + request.form['city'] + ', ' + request.form['state'] + ', ' + request.form['pincode'],
+                request.form['phone']
+            ):
+            return render_template("hospital-register.html", user=[], errmsg="Hospital with that mail already exsist")
+        return render_template("hospital-post-regs.html")
+    return render_template("hospital-register.html", user=[])
 
 @app.route("/hospital-logout")
 def hospital_logout():
-    session.pop('hospital_id', None)
-    session.get('hospital_id')
+    session.pop('hospital_data', None)
+    session.get('hospital_data')
     return redirect(url_for('hospital_login'))
 
 if __name__ == "__main__":

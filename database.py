@@ -33,7 +33,8 @@ def create_table():
             latitude REAL NOT NULL,
             longitude REAL NOT NULL,
             address TEXT NOT NULL,
-            phone TEXT NOT NULL
+            phone TEXT NOT NULL,
+            certified INTEGER DEFAULT 0
     );""")
 
     conn.commit()
@@ -132,20 +133,22 @@ def get_hospital_by_email(email):
 
 def verify_hospital_password(email, password):
     hospital = get_hospital_by_email(email)
-    if hospital and hospital['password'] == password:
+    if hospital and hospital['password'] == password and hospital['certified'] == 1:
         return hospital
     return None
 
 def add_hospital(name, email, password, lat, log, address, phone):
+    if get_hospital_by_email(email):
+        return False
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     cur.execute('''
-        INSERT INTO hospitals (name, email, password, latitude, longitude, address, phone)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ''', (name, email, password, float(lat), float(log), address, phone))
+        INSERT INTO hospitals (name, email, password, latitude, longitude, address, phone, certified)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (name, email, password, float(lat), float(log), address, phone, 0))
     conn.commit()
     conn.close()
-
+    return True
 
 from datetime import datetime
 from math import radians, sin, cos, sqrt, atan2

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bridge: Health Emergency QR Band</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&family=Audiowide&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+
+  <style>
+    #map {
+      height: 300px;
+      width: 100%;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img"><span style="padding-left: 10px;">Blood Bridge</span></div>
+      <a href="/logout" class="nav-btn">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2 style="color: red;">{{ errmsg }}</h2>
+      <h2>Update Hospital Info</h2>
+      <form action="/hospital-register" method="post" class="register-form" autocomplete="off">
+
+        <!-- Personal Details -->
+        <div class="form-group">
+          <label for="name">Full Name of the Hospital</label>
+          <input type="text" id="name" name="name" required value="{{ user.name }}">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required value="{{ user.email }}">
+          </div>
+          <div class="form-group">
+            <label for="phone">Primary Contact Number</label>
+            <input type="tel" id="phone" name="phone" required value="{{ user.phone }}">
+          </div>
+          <div class="form-group">
+            <label for="phone">Set a Password</label>
+            <input type="text" id="password" name="password" required value="{{ user.password }}">
+          </div>
+        </div>
+
+        <!-- Address Fields -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address_line">Address Line</label>
+            <input type="text" id="address_line" name="address_line" value="{{ user.address_line }}">
+          </div>
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" value="{{ user.city }}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" value="{{ user.state }}">
+          </div>
+          <div class="form-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" id="pincode" name="pincode" value="{{ user.pincode }}">
+          </div>
+        </div>
+
+        <!-- Location with Map -->
+        <label for="map">Click on the map to autofill Latitude & Longitude of the hospital</label>
+        <div id="map"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="latitude">Latitude</label>
+            <input type="text" id="latitude" name="latitude" value="{{ user.latitude }}">
+          </div>
+          <div class="form-group">
+            <label for="longitude">Longitude</label>
+            <input type="text" id="longitude" name="longitude" value="{{ user.longitude }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="button" onclick="getLocation()">Detect Location</button>
+        </div>
+
+        <button type="submit">Save</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <script>
+    const latInput = document.getElementById('latitude');
+    const lngInput = document.getElementById('longitude');
+
+    let lat = parseFloat(latInput.value) || 20.5937;
+    let lng = parseFloat(lngInput.value) || 78.9629;
+
+    const map = L.map('map').setView([lat, lng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+
+    const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+
+    marker.on('dragend', function () {
+      const pos = marker.getLatLng();
+      latInput.value = pos.lat.toFixed(6);
+      lngInput.value = pos.lng.toFixed(6);
+    });
+
+    map.on('click', function (e) {
+      const pos = e.latlng;
+      marker.setLatLng(pos);
+      latInput.value = pos.lat.toFixed(6);
+      lngInput.value = pos.lng.toFixed(6);
+    });
+  </script>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

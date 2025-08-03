@@ -15,27 +15,18 @@
   <header>
     <nav class="navbar">
       <div class="logo"><img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img"><span style="padding-left: 10px;">Blood Bridge</span></div>
-      <!-- <a href="/register" class="nav-btn">Register</a> -->
+      <!-- <a href="/" class="nav-btn">Home</a> -->
     </nav>
   </header>
+    <section class="hero">
+        <h1>Registration Complete</h1>
+        <p>Thank you for joining <strong>Blood Bridge</strong> as a registered hospital.</p>
+        <p>Your support could help save countless lives.</p>
+        <p>Our team will review your submission and verify your credentials shortly.</p>
+        <p>You'll receive updates via email once your registration is approved.</p>
+        <a href="/" class="cta-btn">Return to Home</a>
+    </section>
 
-    <main class="container">
-        <section class="card">
-            <h2>Login - Hospital Dashboard</h2>
-            <form action="/hospital" method="post" class="register-form">
-                <label for="name">Email Address</label>
-                <input id="email" type="email" id="email" name="email" placeholder="you@example.com" required>
-
-                <label for="email">Password</label>
-                <input id="password" type="password" id="password" name="password" placeholder="********" required>
-
-                <label for="">{{error}}</label>
-
-                <button type="submit">Submit</button>
-                <a href="/hospital-register">Register</a>
-            </form>
-        </section>
-    </main>
 
   <footer>
     <div class="footer-content">

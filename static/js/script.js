@@ -8,7 +8,7 @@ function getLocation() {
 
   if (!navigator.geolocation) {
     button.textContent = "❌ No GPS Support";
-    setTimeout(() => resetButton(button, originalText), 2000);
+    setTimeout(() => resetButton(button, originalText), 2000); 
     return;
   }
 
