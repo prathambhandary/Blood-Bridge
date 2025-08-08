@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bridge: Health Emergency QR Band</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&family=Audiowide&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img"><span style="padding-left: 10px;">Blood Bridge</span></div>
+    </nav>
+  </header>
+
+    <section class="container donor-list">
+        <h2>Manage Emergency</h2>
+        <div style="
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px;">
+            <form action="/add-emergency" method="post" class="sos">
+                <button type="submit" class="sos-button">Add Emergency Request</button>
+            </form>
+            <form action="/view-emergency" method="post" class="sos">
+                <button type="submit" class="sos-button">View Emergency Request</button>
+            </form>
+            <form action="/add-donation" method="post" class="sos">
+                <button type="submit" class="sos-button">Add Donation</button>
+            </form>
+        </div>
+    </section>
+
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

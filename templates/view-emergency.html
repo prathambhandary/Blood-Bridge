@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bridge: Health Emergency QR Band</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&family=Audiowide&display=swap" rel="stylesheet">
+  <style>
+    table {
+    border-radius: 6px;
+    overflow: hidden;
+}
+thead th {
+    background-color: #aa001e;
+    color: white;
+}
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo"><img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img"><span style="padding-left: 10px;">Blood Bridge</span></div>
+    </nav>
+  </header>
+
+    <main class="container">
+        <section class="card">
+    <h2>Existing Emergency Needs</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse: collapse; text-align: left;" class="donor-table">
+        <thead style="background-color: #f2f2f2;">
+            <tr>
+                <th>ID</th>
+                <th>Blood Group</th>
+                <th>Status</th>
+                <th>Date & Time</th>
+                <th>Phone</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in emergencies %}
+            <tr>
+                <td>{{ e.id }}</td>
+                <td>{{ e.blood_group }}</td>
+                <td>{{ e.status }}</td>
+                <td>{{ e.datetime }}</td>
+                <td><a href="tel:+91{{ e.contact }}">{{ e.phone }}</a></td>
+                <td>{{ e.latitude }}</td>
+                <td>{{ e.longitude }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+    </main>
+
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Blood Bridge | Pratham Bhandary | For every life that matters</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
