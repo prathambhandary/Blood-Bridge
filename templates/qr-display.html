@@ -22,11 +22,13 @@
       <img src="{{ url_for('static', filename='qrcodes/' + id + '.png') }}"
           alt="QR Code"
           style="width: 100%; max-width: 300px; height: auto; margin-bottom: 1rem;" />
-      <form action="" class="register-form">
+      <form action="/back-home" class="register-form">
         <a href="{{ url_for('static', filename='qrcodes/' + id + '.png') }}" class="register-form"
-          download="{{ id }}_qr.png">
+          download="{{ id }}_qr.png"
+          style="text-decoration: none;">
           <button type="button" style="background-color: #aa001e;">Download</button>
         </a>
+        <button type="submit">Back Home</button>
       </form>
     </section>
   </main>

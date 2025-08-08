@@ -1,5 +1,10 @@
 import sqlite3
-
+import qrcode
+import uuid
+from PIL import Image, ImageDraw, ImageFont
+from datetime import datetime
+from math import radians, sin, cos, sqrt, atan2
+import pytz
 DATABASE = "blood_bridge.db"
 
 def create_table():
@@ -72,6 +77,18 @@ def create_table():
         age INTEGER,
         last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+    """)
+
+    c.execute( """
+        CREATE TABLE IF NOT EXISTS emergency_needs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            blood_group TEXT NOT NULL,
+            status TEXT NOT NULL,
+            datetime TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            latitude REAL NOT NULL,
+            longitude REAL NOT NULL
+        );
     """)
 
     conn.commit()
@@ -166,8 +183,6 @@ def get_all_donors():
     conn.close()
     return [dict(row) for row in donors]
 
-import sqlite3
-
 def get_hospital_by_email(email):
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
@@ -196,9 +211,6 @@ def add_hospital(name, email, password, lat, log, address, phone):
     conn.close()
     return True
 
-from datetime import datetime
-from math import radians, sin, cos, sqrt, atan2
-
 def calculate_distance(lat1, lon1, lat2, lon2):
     # Haversine formula
     R = 6371  # Radius of Earth in km
@@ -224,11 +236,6 @@ def is_eligible_to_donate(last_donated_date_str):
     except:
         return False  # Invalid date format
     
-import qrcode
-import uuid
-import os
-from PIL import Image, ImageDraw, ImageFont
-
 def generate_qr(data, qr_id):
     # --- QR Generation ---
     qr = qrcode.QRCode(
@@ -348,7 +355,7 @@ def add_qr_user(user_data):
     conn.close()
     return True
 
-def get_donor_by_qr_id(qr_id):
+def get_qr_donor_by_qr_id(qr_id):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM qr_users WHERE qr_code_id = ?", (qr_id,))
@@ -436,8 +443,44 @@ def get_qr_donor_by_email(email):
         }
     return None
 
-# Run once to set up the DB
+def get_qr_donor_by_name_email(name, email):
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row  # lets you access columns by name
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM qr_users
+        WHERE name = ? AND email = ?
+    """, (name, email))
+
+    donor = cursor.fetchone()
+    conn.close()
+
+    return donor  # returns None if not found
+
+def insert_emergency_need(blood_group, status, dt, phone, latitude, longitude):
+    conn = sqlite3.connect("blood_bridge.db")
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO emergency_needs (blood_group, status, datetime, phone, latitude, longitude)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (blood_group, status, dt, phone, latitude, longitude))
+    conn.commit()
+    conn.close()
+    return True
+
+def get_all_emergency():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute('SELECT * FROM emergency_needs')
+    donors = c.fetchall()
+    conn.close()
+    return [dict(row) for row in donors]
+
+
 if __name__ == "__main__":
     create_table()
     print("Database initialized.")
-    print(get_all_donors())
+    # print(get_all_donors())
+    print(get_all_emergency())

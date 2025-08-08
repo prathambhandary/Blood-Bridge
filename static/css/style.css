@@ -613,8 +613,80 @@ body {
     text-align: center;
     margin: 0.5rem 0;
   }
+  .container-post-login h2 {
+  background-color: var(--primary);
+  color: var(--bg-light);
+  border-top-left-radius: 50px;
+  min-height: 10px;
+  max-width: 400px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+}
 }
 
+.not-eligible {
+  color: red;
+}
+
+.container-post-login {
+  display: flex;
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
+  gap: 20px; /* space between cards */
+  justify-content: center; /* center them horizontally */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.container-post-login .card {
+  background: #fff;
+  border-radius: 10px;
+  padding-bottom: 20px;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  flex: 1 1 600px; /* grow, shrink, min width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-top-left-radius: 50px;
+}
+
+.cta-btn, .nav-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.container-post-login h2 {
+  background-color: var(--primary);
+  color: var(--bg-light);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.container-post-login p {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #f5f5f5;
+}
+
+.not-eligible {
+  color: red;
+}
+.not-eligible {
+  color: red;
+}
 .not-eligible {
   color: red;
 }

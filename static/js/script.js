@@ -71,3 +71,22 @@ function getLocationWithFallback() {
     { enableHighAccuracy: false, timeout: 4000 }
   );
 }
+
+function toggleMenu() {
+  const navLinks = document.getElementById("nav-links");
+  navLinks.classList.toggle("active");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Get India time
+    let now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+
+    // Format date to YYYY-MM-DD
+    let dateStr = now.toISOString().split("T")[0];
+    document.getElementById("date").value = dateStr;
+
+    // Format time to HH:MM
+    let hours = now.getHours().toString().padStart(2, "0");
+    let minutes = now.getMinutes().toString().padStart(2, "0");
+    document.getElementById("time").value = `${hours}:${minutes}`;
+});
