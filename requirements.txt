@@ -8,3 +8,4 @@ Werkzeug>=2.3.3
 qrcode==7.4.2
 Pillow==10.3.0
 python-dotenv==1.0.1
+pytz==2024.1

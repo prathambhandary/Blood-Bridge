@@ -303,6 +303,8 @@ def qr_register():
     if session.get("donor_id"):
         user = get_donor_by_id(session.get("donor_id"))
         donor = get_qr_donor_by_name_email(user['name'], user['email'])
+        if not donor:
+            donor1 = user
         user = {}
         if request.method == "POST":
             if donor:
@@ -356,7 +358,10 @@ def qr_register():
                 return render_template("qr-register.html", user=user_data, errmsg="User already exists with this email and name!")
 
             return render_template("qr-display.html", id=qr)
-        return render_template("qr-register.html", user=donor)
+        if not donor:
+            return render_template("qr-register.html", user=donor1)
+        else:
+            return render_template("qr-register.html", user = donor)
     return render_template('login.html')
 
 
