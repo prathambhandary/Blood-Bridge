@@ -49,9 +49,15 @@ tbody tr:nth-child(even) {
         <tbody>
             {% for e in emergencies %}
             <tr>
-                <td>{{ e.id }}</td>
-                <td>{{ e.blood_group }}</td>
-                <td>{{ e.status }}</td>
+                <td>{{ loop.index }}</td>
+                <td>{{ e.blood_group }}</td>  
+                <td  class="{% if e.status == 'Urgent' %}red
+                            {% elif e.status == 'Fulfilled' %}green
+                            {% else %}grey
+                            {% endif %}"> 
+                    {{ e.status }}
+                </td>
+
                 <td>{{ e.datetime }}</td>
                 <td><a href="tel:+91{{ e.contact }}">{{ e.phone }}</a></td>
                 <td>{{ e.latitude }}</td>

@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin, current_user
 from database import add_donor, get_donor_by_email, update_donor, verify_hospital_password, calculate_distance, days_since, get_all_donors, is_eligible_to_donate, add_hospital, verify_hospital_password, get_donor_by_id, generate_qr_id, add_qr_user, get_qr_donor_by_qr_id, get_qr_donor_by_email, generate_qr, get_qr_donor_by_name_email, insert_emergency_need, get_all_emergency
 from mail import send_email
+from datetime import datetime
 import os
 
 app = Flask(__name__)
@@ -378,9 +379,17 @@ def get_patient_by_qr(qr_id):
 @app.route('/status')
 def status():
     if current_user.is_authenticated:
+        if session.get('hospital_data'):
+            return f"""Logged in as: {current_user.email}\n
+            Logged in as: {session.get('hospital_data')['name']}"""
         return f"Logged in as: {current_user.email}"
     if session.get('donor_id'):
+        if session.get('hospital_data'):
+            return f""""Logged in as: {session.get('donor_id')}\n   
+            Logged in as: {session.get('hospital_data')['name']}"""
         return f"Logged in as: {session.get('donor_id')} with id"
+    if session.get('hospital_data'):
+        return f"Logged in as: {session.get('hospital_data')['name']}"
     return "Not logged in"
 
 @app.route('/view-qr')
@@ -403,20 +412,44 @@ def view_qr():
 
 @app.route("/manage-emergency", methods=["POST", "GET"])
 def manage_emergency():
+    if not session.get('hospital_data'):
+        return redirect(url_for('hospital_login'))
     if request.method == "POST":
         return render_template("manage-emergency.html")
 
 @app.route("/add-emergency", methods=["POST", "GET"])
 def add_emergency():
+    if not session.get('hospital_data'):
+        return redirect(url_for('hospital_login'))
     if request.method == "POST":
         return render_template("add-emergency.html")
+    
+@app.route("/add-emergency-need", methods=["POST", "GET"])
+def add_emergency_need():
+    if not session.get('hospital_data'):
+        return redirect(url_for('hospital_login'))
+    if request.method == "POST":
+        data = session.get('hospital_data')
+        blood_group = request.form['blood_group']
+        status = request.form['status']
+        date = request.form['date']
+        time = request.form['time']
+        phone = data['phone']
+        lat = data['latitude']
+        log = data['longitude']
+        dt = datetime.strptime(f"{date} {time}", "%Y-%m-%d %H:%M")
+        dt = dt.strftime("%Y-%m-%d %H:%M:%S")
+        hospital_id = data['id']
+        insert_emergency_need(blood_group, status, dt, phone, lat, log, hospital_id)
+
+        return render_template("message.html", message="Emergency Request Added")
     
 @app.route("/view-emergency", methods=["POST", "GET"])
 def view_emergency():
     if not session.get('hospital_data'):
         return redirect(url_for('hospital_login'))
     if request.method == "POST":
-        data = get_all_emergency()
+        data = get_all_emergency(session.get('hospital_data')['id'])
 
         print(data)
 

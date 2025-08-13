@@ -82,6 +82,7 @@ def create_table():
     c.execute( """
         CREATE TABLE IF NOT EXISTS emergency_needs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hospital_id INTEGER NOT NULL,
             blood_group TEXT NOT NULL,
             status TEXT NOT NULL,
             datetime TEXT NOT NULL,
@@ -458,29 +459,58 @@ def get_qr_donor_by_name_email(name, email):
 
     return donor  # returns None if not found
 
-def insert_emergency_need(blood_group, status, dt, phone, latitude, longitude):
+def insert_emergency_need(blood_group, status, dt, phone, latitude, longitude, hospital_id):
     conn = sqlite3.connect("blood_bridge.db")
     c = conn.cursor()
     c.execute("""
-        INSERT INTO emergency_needs (blood_group, status, datetime, phone, latitude, longitude)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (blood_group, status, dt, phone, latitude, longitude))
+        INSERT INTO emergency_needs (blood_group, status, datetime, phone, latitude, longitude, hospital_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (blood_group, status, dt, phone, latitude, longitude, hospital_id))
     conn.commit()
     conn.close()
     return True
 
-def get_all_emergency():
+def get_all_emergency(hospital_id):
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    c.execute('SELECT * FROM emergency_needs')
-    donors = c.fetchall()
+    c.execute('''
+        SELECT *
+        FROM emergency_needs
+        WHERE hospital_id = ?
+        ORDER BY 
+            CASE status
+                WHEN 'Urgent' THEN 1
+                WHEN 'Fulfilled' THEN 2
+                WHEN 'Cancelled' THEN 3
+                ELSE 4
+            END,
+            datetime(datetime) DESC
+    ''', (hospital_id,))
+    emergencies = c.fetchall()
     conn.close()
-    return [dict(row) for row in donors]
+    return [dict(row) for row in emergencies]
 
+
+def clean_table_fast(table_name):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    cursor.execute(f"DELETE FROM sqlite_sequence WHERE name='{table_name}';")  # reset IDs
+    cursor.execute(f"DELETE FROM {table_name};")
+    conn.commit()
+    conn.close()
+
+def delete_table(table_name):
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c.execute(f"DROP TABLE IF EXISTS {table_name}")
+    conn.commit()
+    conn.close()
 
 if __name__ == "__main__":
     create_table()
     print("Database initialized.")
     # print(get_all_donors())
-    print(get_all_emergency())
+    # print(clean_table_fast('emergency_needs'))
+    # delete_table('emergency_needs')
