@@ -61,6 +61,9 @@ def user_donor():
             "health_problems": request.form['health_problems']
         }
 
+        session['blood_group'] = request.form['blood_group']
+        session['email'] = request.form['email']
+
         print(donor_data)
 
         if not add_donor(donor_data):
@@ -75,6 +78,31 @@ def user_donor():
         'phone': session.get('phone'),
     }
     return render_template("user-edit-card.html", user=user)
+
+@app.route("/sample_mail", methods=["GET", "POST"])
+def sample_mail():
+    if request.method == "POST":
+        email = session.get('email')
+        if send_email(
+            email,
+            session.get('blood_group'),
+            "https://maps.google.com/?q=0,0",
+            "ABC Hospital, XYZ Street, MNO City",
+            "00000 00000"
+        ):
+            return render_template(
+                "post-sample-mail.html",
+                msg=f"A Sample Mail has been sent to {email}<br>If mail not received contact at us at bloodbridgeofficial@gmail.com "
+            )
+
+        return render_template(
+            "post-sample-mail.html",
+            msg=f"There was an Error sending a mail to {email}"
+        )
+
+    # if request.method == "GET"
+    return "fail"
+
 
 @app.route("/save", methods=["POST"])
 def save():

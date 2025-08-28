@@ -48,8 +48,10 @@ def send_email(to_email, blood_group, location_url, address, call_number):
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
         print(f"✅ Emergency email sent to {to_email}")
+        return True
     except Exception as e:
         print(f"❌ Error sending emergency email: {e}")
+        return False
 
 def happy_mail(details):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -89,6 +91,7 @@ def happy_mail(details):
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
+        print(f"🦕Mail sent to {details['email']}")
     except Exception as e:
         print(f"❌ Error sending emergency email: {e}")
 
@@ -133,6 +136,7 @@ def happy_mail_2(details):
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
+        print(f"🦕Mail sent to {details['email']}")
     except Exception as e:
         print(f"❌ Error sending emergency email: {e}")
 

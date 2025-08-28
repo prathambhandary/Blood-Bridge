@@ -4,27 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blood Bridge: Health Emergency QR Band</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   <link rel="shortcut icon" href="{{ url_for('static', filename='resourses/logo4.png') }}" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 </head>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo"><img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img"><span style="padding-left: 10px;">Blood Bridge</span></div>
+      <div class="logo">
+        <img src="{{ url_for('static', filename='resourses/logo4.png') }}" alt="" class="logo-img">
+        <span style="padding-left: 10px;">Blood Bridge</span>
+      </div>
       <a href="/" class="nav-btn">Home</a>
     </nav>
   </header>
-  <section class="hero">
-    <h1>You're all set!</h1>
-    <p>Thanks for being here with us as a donor with Blood Bridge.</p>
-    <p>All your details have been saved securely in our systems.</p>
-    <a href="/back-home" class="cta-btn">Back Home</a>
-  </section>
 
+  <section class="hero">
+    <h1>Sample Emergency Mail</h1>
+
+    {% if msg %}
+      <p style="margin-top: 15px; font-weight: bold;">{{ msg|safe }}</p>
+    {% endif %}
+
+    <a href="/" class="cta-btn" style="margin-top: 10px; display:inline-block;">Back to Home</a>
+  </section>
 
   <footer>
     <div class="footer-content">
@@ -32,3 +37,4 @@
     </div>
   </footer>
 </body>
+</html>
