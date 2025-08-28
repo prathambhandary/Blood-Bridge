@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin, current_user
 from database import add_donor, get_donor_by_email, update_donor, verify_hospital_password, calculate_distance, days_since, get_all_donors, is_eligible_to_donate, add_hospital, verify_hospital_password, get_donor_by_id, generate_qr_id, add_qr_user, get_qr_donor_by_qr_id, get_qr_donor_by_email, generate_qr, get_qr_donor_by_name_email, insert_emergency_need, get_all_emergency
-from mail import send_email
+from mail import send_email, happy_mail, happy_mail_2
 from datetime import datetime
 import os
 
@@ -65,7 +65,8 @@ def user_donor():
 
         if not add_donor(donor_data):
             return render_template("user-edit-card.html", user=donor_data, errmsg="Donor already exists!")
-
+        happy_mail(donor_data)
+        happy_mail_2(donor_data)
         return render_template("post-regs.html")
 
     user = {
